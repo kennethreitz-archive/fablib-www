@@ -3,7 +3,7 @@
 import os
 
 import requests
-from flask import Flask
+from flask import Flask, request, render_template
 
 API_URL = os.environ['API_URL']
 
@@ -13,7 +13,7 @@ s = requests.session()
 
 @app.route('/')
 def hello():
-    return 'Hello World!'
+    return render_template('index.html')
 
 @app.route('/<string:profile>')
 def get_profile(profile):
