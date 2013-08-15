@@ -15,13 +15,15 @@ s = requests.session()
 def hello():
     return 'Hello World!'
 
-@app.route('/<string:profile>/')
+@app.route('/<string:profile>')
 def get_profile(profile):
-    return 'Hello World!'
-
-@app.route('/<string:profile>/<path:document>/')
-def get_document(profile, document):
     url = '{}/{}/{}'.format(API_URL, profile, document)
+    r = s.get(url)
+    return r.content
+
+@app.route('/<string:profile>/<path:document>')
+def get_document(profile, document):
+    url = '{}/render/{}/{}'.format(API_URL, profile, document)
     r = s.get(url)
     return r.content
 
