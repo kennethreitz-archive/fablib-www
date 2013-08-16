@@ -9,7 +9,6 @@ from flask import Flask, request, render_template
 API_URL = os.environ['API_URL']
 
 app = Flask(__name__)
-app.debug = True
 s = requests.session()
 
 @app.route('/')
