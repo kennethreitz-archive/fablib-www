@@ -18,15 +18,17 @@ def hello():
 
 @app.route('/<string:profile>')
 def get_profile(profile):
-    url = '{}/{}/{}'.format(API_URL, profile, document)
+    url = '{}/{}'.format(API_URL, profile)
     r = s.get(url)
-    return render_template('index.html', text=markdown(r.content))
+    text = r.json()['document']['text']
+    return render_template('index.html', text=markdown(text))
 
 @app.route('/<string:profile>/<path:document>')
 def get_document(profile, document):
-    url = '{}/render/{}/{}'.format(API_URL, profile, document)
+    url = '{}/{}/{}'.format(API_URL, profile, document)
     r = s.get(url)
-    return render_template('index.html', text=markdown(r.content))
+    text = r.json()['document']['text']
+    return render_template('index.html', text=markdown(text))
 
 if __name__ == '__main__':
     app.run()
