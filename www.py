@@ -13,7 +13,7 @@ s = requests.session()
 
 @app.route('/')
 def hello():
-    return render_template('index.html', text=markdown('yo.\n\n# bro'))
+    return render_template('index.html', text=markdown('# Fallib\n\n## Document ALL the Things!'))
 
 @app.route('/<string:profile>')
 def get_profile(profile):
