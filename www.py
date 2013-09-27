@@ -4,7 +4,7 @@ import os
 
 import requests
 from markdown2 import markdown
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 
 API_URL = os.environ['API_URL']
 
@@ -20,8 +20,19 @@ def hello():
 def login():
     return render_template('index.html', text=markdown('# Fallib\n\n## Document ALL the Things!'))
 
-@app.route('/<path:document>/')
+@app.route('/<path:document>')
 def get_document(document):
+
+    # strip
+    split = document.split('/')
+    if len(split) == 1:
+        # Profile without a slash.
+        redirect('{}/'.format(document))
+
+    if not split[1]:
+        # This is a proper profile URL.
+        document = split[0]
+
     url = '{}/{}/html'.format(API_URL, document)
     r = s.get(url)
     return render_template('index.html', text=r.text), r.status_code
