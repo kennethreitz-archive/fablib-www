@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fallib — Login</title>
+</head>
+<body>
+{% if user %}
+
+    <h1>User</h1>
+    <p><a href='/{{ user }}'>{{ user }}</a></p>
+{% else %}
+    <h1>Login</h1>
+    <form method='POST' action='/login'>
+        Username: <input type="text" name="username">
+        Password: <input type="password" name="password">
+
+        <button type='submit'>Go!</button>
+    </form>
+{% endif %}
+
+
+</body>
+</html>

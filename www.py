@@ -4,21 +4,52 @@ import os
 
 import requests
 from markdown2 import markdown
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, session, g
 
 API_URL = os.environ['API_URL']
 
 app = Flask(__name__)
 app.debug = True
-s = requests.session()
+app.secret_key = 'phoiwafhipowhfopwhofe'
+
+requests = requests.session()
 
 @app.route('/')
 def hello():
     return render_template('index.html', text=markdown('# Fallib: Documentation for Humans. \n## Users \n\n- [kennethreitz](/kennethreitz)'))
 
-@app.route('/')
+@app.route('/login')
 def login():
-    return render_template('index.html', text=markdown('# Fallib\n\n## Document ALL the Things!'))
+    return render_template('login.html')
+
+@app.route('/login', methods=['POST', 'PUT'])
+def login_post():
+    session['username'] = request.form['username']
+    session['password'] = request.form['password']
+
+    return render_template('login.html', user=session['username'])
+
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+@app.route('/signup', methods=['POST', 'PUT'])
+def signup_post():
+
+    username = request.form['username']
+    password = request.form['password']
+
+    url = '{}/signup'.format(API_URL)
+    data = {'username': username, 'password': password}
+
+    r = requests.post(url, data=data)
+
+    if r.ok:
+        session['username'] = username
+        session['password'] = password
+
+    return login_post()
 
 @app.route('/<path:document>')
 def get_document(document):
@@ -34,13 +65,13 @@ def get_document(document):
         document = split[0]
 
     url = '{}/{}/html'.format(API_URL, document)
-    r = s.get(url)
+    r = requests.get(url)
     return render_template('index.html', text=r.text), r.status_code
 
 @app.route('/content/<path:document>')
 def get_content(document):
     url = '{}/content/{}/text'.format(API_URL, document)
-    r = s.get(url)
+    r = requests.get(url)
     return render_template('index.html', text=r.text)
 
 if __name__ == '__main__':
