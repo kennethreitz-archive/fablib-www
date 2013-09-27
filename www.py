@@ -20,7 +20,7 @@ def hello():
 def login():
     return render_template('index.html', text=markdown('# Fallib\n\n## Document ALL the Things!'))
 
-@app.route('/<path:document>')
+@app.route('/<path:document>/')
 def get_document(document):
     url = '{}/{}/html'.format(API_URL, document)
     r = s.get(url)
