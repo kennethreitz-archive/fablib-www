@@ -27,7 +27,7 @@ def get_document(document):
     split = document.split('/')
     if len(split) == 1:
         # Profile without a slash.
-        redirect('{}/'.format(document))
+        return redirect('{}/'.format(document))
 
     if not split[1]:
         # This is a proper profile URL.
