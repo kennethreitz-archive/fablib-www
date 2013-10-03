@@ -45,9 +45,11 @@
           <!-- <strong> / </strong> -->
           <a href="/">fallib</a>
           <strong> / </strong>
-          <a href="/kennethreitz">kennethreitz</a>
-          <strong> / </strong>
-          <a href="/kennethreitz">personal/infp</a>
+          {% block path %}
+            <a href="/kennethreitz">kennethreitz</a>
+            <strong> / </strong>
+            <a href="/kennethreitz">personal/infp</a>
+          {% endblock %}
           <hr />
         </p>
       </div>
@@ -206,7 +208,7 @@
                 </a>
               </p>
 
-              {% endfooter %}
+              {% endblock %}
             </div>
 
 

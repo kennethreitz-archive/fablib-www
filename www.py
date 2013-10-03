@@ -54,6 +54,8 @@ def signup_post():
 @app.route('/<path:document>')
 def get_document(document):
 
+    profile = False
+
     # strip
     split = document.split('/')
     if len(split) == 1:
@@ -63,10 +65,21 @@ def get_document(document):
     if not split[1]:
         # This is a proper profile URL.
         document = split[0]
+        profile = True
 
-    url = '{}/{}/html'.format(API_URL, document)
-    r = requests.get(url)
-    return render_template('index.html', text=r.text), r.status_code
+    api_url = '{}/{}'.format(API_URL, document)
+    html_url = '{}/{}/html'.format(API_URL, document)
+
+    api = requests.get(api_url)
+    html = requests.get(html_url)
+
+    payload = {}
+    payload['doc'] = api.json()[u'document']
+    payload['doc']['html'] = html.text
+    payload['path'] = document
+    payload['profile'] = profile
+
+    return render_template('document.html', **payload), api.status_code
 
 @app.route('/content/<path:document>')
 def get_content(document):
